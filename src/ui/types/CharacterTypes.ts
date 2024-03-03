@@ -1,4 +1,4 @@
-export enum ElementTypes {
+export enum CharacterTypes {
     Player = 'Player',
     Enemy = 'Enemy',
     NPC = 'NPC',

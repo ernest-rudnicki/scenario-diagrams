@@ -1,6 +1,6 @@
-import { ElementTypes } from "./ElementTypes";
+import { CharacterTypes } from "./CharacterTypes";
+import { ElementAttributes } from "./ElementAttributes";
 
-export interface CharacterAttributes {
-    text: string;
-    type: ElementTypes;
+export interface CharacterAttributes extends ElementAttributes {
+    type: CharacterTypes;
 }
