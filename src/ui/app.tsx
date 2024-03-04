@@ -8,6 +8,7 @@ import { CharacterTypes } from "./types/CharacterTypes";
 import { ItemElement } from "./diagram-elements/ItemElement";
 import { ContainerElement } from "./diagram-elements/ContainerElement";
 import { BuildingElement } from "./diagram-elements/BuildingElement";
+import { LocationElement } from "./diagram-elements/LocationElement";
 
 const CountingComponent = () => {
 
@@ -20,11 +21,12 @@ const CountingComponent = () => {
         const item  = new ItemElement({ position: { x: 100, y: 100 }, size: { width: 100, height: 40 } }, { text: "Sword" })
         const container = new ContainerElement({ position: { x: 250, y: 100 }, size: { width: 100, height: 60 } }, { text: "Backpack" })
         const building = new BuildingElement({ position: { x: 400, y: 100 }, size: { width: 100, height: 60 } }, { text: "House" })
+        const location =  new LocationElement({ position: { x: 100, y: 200 }, size: { width: 100, height: 60 } }, { text: "Forest" })
 
-        canvas.addElements([character, enemy, npc, item, container, building])
+        canvas.addElements([character, enemy, npc, item, container, building, location])
     });
 
-    return <div id="paper">Count value is</div>;
+    return <div id="paper"></div>;
 };
 
 render(() => <CountingComponent />, document.getElementById("app"));
