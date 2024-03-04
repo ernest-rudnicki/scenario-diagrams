@@ -7,5 +7,7 @@ export enum Colors {
     Gold = '#ffcc00',
     LightGreen = "#ccffff",
     LightBlue = "#99ffff",
-    LightViolet = "#ccccff"
+    LightViolet = "#ccccff",
+    Orange = "#ff6600",
+    MediumGreen = "#52cc7a"
 }

@@ -10,6 +10,7 @@ import { ContainerElement } from "./diagram-elements/ContainerElement";
 import { BuildingElement } from "./diagram-elements/BuildingElement";
 import { LocationElement } from "./diagram-elements/LocationElement";
 import { AttributeElement } from "./diagram-elements/AttributeElement";
+import { AttributeTypes } from "./types/AttributeTypes";
 
 const CountingComponent = () => {
 
@@ -23,9 +24,10 @@ const CountingComponent = () => {
         const container = new ContainerElement({ position: { x: 250, y: 100 }, size: { width: 100, height: 60 } }, { text: "Backpack" })
         const building = new BuildingElement({ position: { x: 400, y: 100 }, size: { width: 100, height: 60 } }, { text: "House" })
         const location =  new LocationElement({ position: { x: 100, y: 200 }, size: { width: 100, height: 60 } }, { text: "Forest" })
-        const attribute = new AttributeElement({ position: { x: 250, y: 220 }, size: { width: 100, height: 20 } }, { text: "Strength" })
+        const attribute = new AttributeElement({ position: { x: 250, y: 220 }, size: { width: 100, height: 20 } }, { text: "Strength", type: AttributeTypes.Normal })
+        const attributeGlobal = new AttributeElement({ position: { x: 400, y: 220 }, size: { width: 100, height: 20 } }, { text: "Strength", type: AttributeTypes.Global })
 
-        canvas.addElements([character, enemy, npc, item, container, building, location, attribute])
+        canvas.addElements([character, enemy, npc, item, container, building, location, attribute, attributeGlobal])
     });
 
     return <div id="paper"></div>;
