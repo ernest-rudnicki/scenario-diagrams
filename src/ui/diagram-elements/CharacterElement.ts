@@ -12,7 +12,7 @@ export class CharacterElement extends BaseElement {
         super(shapeData, characterAttributes)
     }
 
-    protected createShape(shapeData: ShapeData, elementAttributes: CharacterAttributes): shapes.basic.Generic {
+    protected override createShape(shapeData: ShapeData, elementAttributes: CharacterAttributes): shapes.basic.Generic {
         const { text, type } = elementAttributes
 
         return new shapes.standard.Rectangle({
