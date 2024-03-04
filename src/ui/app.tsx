@@ -11,6 +11,7 @@ import { BuildingElement } from "./diagram-elements/BuildingElement";
 import { LocationElement } from "./diagram-elements/LocationElement";
 import { AttributeElement } from "./diagram-elements/AttributeElement";
 import { AttributeTypes } from "./types/AttributeTypes";
+import { ActionElement } from "./diagram-elements/ActionElement";
 
 const CountingComponent = () => {
 
@@ -26,8 +27,9 @@ const CountingComponent = () => {
         const location =  new LocationElement({ position: { x: 100, y: 200 }, size: { width: 100, height: 60 } }, { text: "Forest" })
         const attribute = new AttributeElement({ position: { x: 250, y: 220 }, size: { width: 100, height: 20 } }, { text: "Strength", type: AttributeTypes.Normal })
         const attributeGlobal = new AttributeElement({ position: { x: 400, y: 220 }, size: { width: 100, height: 20 } }, { text: "Strength", type: AttributeTypes.Global })
+        const actionElement = new ActionElement({ position: { x: 100, y: 300 }, size: { width: 100, height: 100 } }, { text: "Attack" })
 
-        canvas.addElements([character, enemy, npc, item, container, building, location, attribute, attributeGlobal])
+        canvas.addElements([character, enemy, npc, item, container, building, location, attribute, attributeGlobal, actionElement])
     });
 
     return <div id="paper"></div>;

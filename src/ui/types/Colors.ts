@@ -9,5 +9,6 @@ export enum Colors {
     LightBlue = "#99ffff",
     LightViolet = "#ccccff",
     Orange = "#ff6600",
-    MediumGreen = "#52cc7a"
+    MediumGreen = "#52cc7a",
+    Grassgreen = "#ccff66",
 }
