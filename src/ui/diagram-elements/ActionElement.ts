@@ -1,11 +1,19 @@
 import { shapes } from "jointjs";
-import { BaseElement } from "./BaseElement";
 import { Colors } from "../types/Colors";
 import { ShapeData } from "../types/Position";
 import { ElementAttributes } from "../types/ElementAttributes";
+import { BaseElement } from "../types/BaseElement";
 
-export class ActionElement extends BaseElement {
-    protected override createShape(shapeData: ShapeData, itemAttributes: ElementAttributes) {
+export class ActionElement implements BaseElement {
+    shape: shapes.basic.Generic;
+    embedded: shapes.basic.Generic[];
+
+    constructor(shapeData: ShapeData, itemAttributes: ElementAttributes) {
+        this.shape = this.createShape(shapeData, itemAttributes)
+        this.embedded = []
+    }
+
+    private createShape(shapeData: ShapeData, itemAttributes: ElementAttributes) {
         const { text } = itemAttributes
 
         return new shapes.standard.Polygon({

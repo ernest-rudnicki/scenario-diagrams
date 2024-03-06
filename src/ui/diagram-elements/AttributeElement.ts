@@ -1,16 +1,20 @@
 import { shapes } from "jointjs";
-import { BaseElement } from "./BaseElement";
 import { Colors } from "../types/Colors";
 import { ShapeData } from "../types/Position";
 import { CharacterAttrAttributes } from "../types/CharacterAttrAttributes";
 import { AttributeColorMap } from "../maps/AttributeColorMap";
+import { BaseElement } from "../types/BaseElement";
 
-export class AttributeElement extends BaseElement {
+export class AttributeElement implements BaseElement {
+    shape: shapes.basic.Generic;
+    embedded: shapes.basic.Generic[];
+
     constructor(shapeData: ShapeData, characterAttributes: CharacterAttrAttributes) {
-        super(shapeData, characterAttributes)
+        this.shape = this.createShape(shapeData, characterAttributes)
+        this.embedded = []
     }
 
-    protected override createShape(shapeData: ShapeData, itemAttributes: CharacterAttrAttributes) {
+    private createShape(shapeData: ShapeData, itemAttributes: CharacterAttrAttributes) {
         const { text } = itemAttributes
 
         return new shapes.basic.Path({

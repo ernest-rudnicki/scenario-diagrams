@@ -1,5 +1,5 @@
 import { dia} from "jointjs";
-import { BaseElement } from "./BaseElement";
+import { BaseElement } from "../types/BaseElement";
 
 export class Canvas {
     private readonly graph = new dia.Graph();
