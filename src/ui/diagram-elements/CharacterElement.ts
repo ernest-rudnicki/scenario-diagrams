@@ -7,11 +7,9 @@ import { CharacterAttributes } from "../types/CharacterAttributes";
 
 export class CharacterElement implements BaseElement {
     shape: shapes.basic.Generic;
-    embedded: shapes.basic.Generic[];
 
     constructor(shapeData: ShapeData, characterAttributes: CharacterAttributes) {
         this.shape = this.createShape(shapeData, characterAttributes)
-        this.embedded = []
     }
 
     private createShape(shapeData: ShapeData, elementAttributes: CharacterAttributes): shapes.basic.Generic {

@@ -6,11 +6,9 @@ import { BaseElement } from "../types/BaseElement";
 
 export class ItemElement implements BaseElement {
     shape: shapes.basic.Generic;
-    embedded: shapes.basic.Generic[];
 
     constructor(shapeData: ShapeData, itemAttributes: ElementAttributes) {
         this.shape = this.createShape(shapeData, itemAttributes)
-        this.embedded = []
     }
 
     private createShape(shapeData: ShapeData, itemAttributes: ElementAttributes) {
