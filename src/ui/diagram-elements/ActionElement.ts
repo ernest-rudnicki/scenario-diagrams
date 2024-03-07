@@ -16,7 +16,7 @@ export class ActionElement implements BaseElement {
 
         return new shapes.standard.Polygon({
             position: shapeData.position,
-            size: shapeData.size,
+            size: { width: text.length * 12,  height: 100 },
             attrs: { body: { fill: Colors.Grassgreen, refPoints: '100 -20, 100 75, 50 40, 3 75, 3 -20',  }, text: { 
                 text,
                 fill: Colors.Black,

@@ -16,7 +16,7 @@ export class LocationElement implements BaseElement {
 
         return new shapes.standard.Ellipse({
             position: shapeData.position,
-            size: shapeData.size,
+            size: { width: text.length * 16, height: 80 },
             attrs: { body: { fill: Colors.LightBlue }, text: { text, fill: Colors.Black } }
           })
     }

@@ -3,8 +3,4 @@ export interface ShapeData {
         x: number;
         y: number;
     }
-    size: {
-        width: number;
-        height: number;
-    }
 }

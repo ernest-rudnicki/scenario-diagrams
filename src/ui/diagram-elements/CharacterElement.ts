@@ -17,8 +17,13 @@ export class CharacterElement implements BaseElement {
 
         return new shapes.standard.Rectangle({
             position: shapeData.position,
-            size: shapeData.size,
+            size: { width: this.calculateWidth(text), height: 60 },
             attrs: { body: { fill: CharacterColorMap[type], rx: 10, ry: 10 }, text: { text, fill: Colors.Black } }
           })
+    }
+
+    private calculateWidth(text: string): number {
+        const textWidth = text.length * 20
+        return textWidth < 100 ? 100 : textWidth
     }
 }

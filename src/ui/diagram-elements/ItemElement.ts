@@ -16,8 +16,13 @@ export class ItemElement implements BaseElement {
 
         return new shapes.standard.Rectangle({
             position: shapeData.position,
-            size: shapeData.size,
+            size: { width: this.calculateWidth(text), height: 60 },
             attrs: { body: { fill: Colors.Grey, rx: 1, ry: 1 }, text: { text, fill: Colors.Black } }
           })
+    }
+
+    private calculateWidth(text: string): number {
+        const textWidth = text.length * 20
+        return textWidth < 100 ? 100 : textWidth
     }
 }
