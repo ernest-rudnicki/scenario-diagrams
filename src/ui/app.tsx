@@ -12,6 +12,8 @@ import { LocationElement } from "./diagram-elements/LocationElement";
 import { AttributeElement } from "./diagram-elements/AttributeElement";
 import { AttributeTypes } from "./types/AttributeTypes";
 import { ActionElement } from "./diagram-elements/ActionElement";
+import winkNLP from "wink-nlp";
+import model from "wink-eng-lite-web-model";
 
 const CountingComponent = () => {
 
@@ -30,6 +32,11 @@ const CountingComponent = () => {
         const actionElement = new ActionElement({ position: { x: 100, y: 300 } }, { text: "Attack" })
 
         canvas.addElements([character, enemy, npc, item, container, building, location, attribute, attributeGlobal, actionElement])
+        const text = 'Hello   World🌎! How are you?';
+        const nlp = winkNLP( model );
+
+        const doc = nlp.readDoc( text );
+        console.log(doc.tokens().out(nlp.its.pos))
     });
 
     return <div id="paper"></div>;

@@ -40,11 +40,13 @@
   },
   "dependencies": {
     "babel-preset-solid": "1.8.8",
+    "backbone": "^1.5.0",
     "electron-squirrel-startup": "^1.0.0",
-    "solid-js": "1.8.8",
     "jointjs": "3.7.7",
     "jquery": "3.7.1",
     "lodash": "4.17.21",
-    "backbone": "^1.5.0"
+    "solid-js": "1.8.8",
+    "wink-eng-lite-web-model": "^1.5.2",
+    "wink-nlp": "^1.14.3"
   }
 }
