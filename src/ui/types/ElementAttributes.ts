@@ -1,3 +1,3 @@
 export interface ElementAttributes {
-    text: string;
+    text: string
 }

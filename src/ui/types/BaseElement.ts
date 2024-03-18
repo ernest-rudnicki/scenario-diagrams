@@ -1,5 +1,5 @@
-import { shapes } from "jointjs";
+import { shapes } from 'jointjs'
 
 export interface BaseElement {
-    shape: shapes.basic.Generic;
+    shape: shapes.basic.Generic
 }

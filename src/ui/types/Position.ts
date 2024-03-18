@@ -1,6 +1,6 @@
 export interface ShapeData {
     position: {
-        x: number;
-        y: number;
+        x: number
+        y: number
     }
 }
