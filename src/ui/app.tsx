@@ -14,8 +14,9 @@ import { AttributeTypes } from './types/AttributeTypes'
 import { ActionElement } from './diagram-elements/ActionElement'
 import winkNLP from 'wink-nlp'
 import model from 'wink-eng-lite-web-model'
+import { BottomBar } from './components/BottomBar/BottomBar'
 
-const CountingComponent = () => {
+const AppComponent = () => {
     onMount(() => {
         const canvas = new Canvas(document.getElementById('paper'))
 
@@ -79,7 +80,14 @@ const CountingComponent = () => {
         console.log(doc.tokens().out(nlp.its.pos))
     })
 
-    return <div id="paper"></div>
+    return (
+        <main class="h-full flex flex-col">
+            <div class="h-full">
+                <div id="paper"></div>
+            </div>
+            <BottomBar />
+        </main>
+    )
 }
 
-render(() => <CountingComponent />, document.getElementById('app'))
+render(() => <AppComponent />, document.getElementById('app'))
