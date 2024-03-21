@@ -15,7 +15,7 @@ import { BottomBar } from './components/BottomBar/BottomBar'
 import {
     DiagramServicesProvider,
     useDiagramServices,
-} from './Providers/DiagramServicesProvider'
+} from './providers/DiagramServicesProvider'
 
 const AppComponent = () => {
     const { canvas, languageProcessor } = useDiagramServices()
