@@ -12,13 +12,16 @@ import { LocationElement } from './diagram-elements/LocationElement'
 import { AttributeElement } from './diagram-elements/AttributeElement'
 import { AttributeTypes } from './types/AttributeTypes'
 import { ActionElement } from './diagram-elements/ActionElement'
-import winkNLP from 'wink-nlp'
-import model from 'wink-eng-lite-web-model'
 import { BottomBar } from './components/BottomBar/BottomBar'
+import {
+    DiagramServicesProvider,
+    useDiagramServices,
+} from './Providers/DiagramServicesProvider'
 
 const AppComponent = () => {
+    const { canvas, languageProcessor } = useDiagramServices()
     onMount(() => {
-        const canvas = new Canvas(document.getElementById('paper'))
+        canvas.init(document.getElementById('paper'))
 
         const character = new CharacterElement(
             { position: { x: 100, y: 30 } },
@@ -73,11 +76,6 @@ const AppComponent = () => {
             attributeGlobal,
             actionElement,
         ])
-        const text = 'Hello   World🌎! How are you?'
-        const nlp = winkNLP(model)
-
-        const doc = nlp.readDoc(text)
-        console.log(doc.tokens().out(nlp.its.pos))
     })
 
     return (
@@ -90,4 +88,11 @@ const AppComponent = () => {
     )
 }
 
-render(() => <AppComponent />, document.getElementById('app'))
+render(
+    () => (
+        <DiagramServicesProvider>
+            <AppComponent />
+        </DiagramServicesProvider>
+    ),
+    document.getElementById('app')
+)

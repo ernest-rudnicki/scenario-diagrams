@@ -5,8 +5,7 @@ export class Canvas {
     private readonly graph = new dia.Graph()
     private paper: dia.Paper
 
-    constructor(paperElement: HTMLElement) {
-        this.graph = new dia.Graph()
+    init(paperElement: HTMLElement): void {
         this.paper = new dia.Paper({
             el: paperElement,
             width: 1024,
