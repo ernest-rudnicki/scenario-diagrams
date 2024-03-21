@@ -1,7 +1,7 @@
 import { dia } from 'jointjs'
 import { BaseElement } from '../types/BaseElement'
 
-export class Canvas {
+export class CanvasService {
     private readonly graph = new dia.Graph()
     private paper: dia.Paper
 

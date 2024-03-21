@@ -1,7 +1,6 @@
 import { render } from 'solid-js/web'
 import './index.css'
 import { onMount } from 'solid-js'
-import { Canvas } from './diagram-elements/Canvas'
 
 import { CharacterElement } from './diagram-elements/CharacterElement'
 import { CharacterTypes } from './types/CharacterTypes'
