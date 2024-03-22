@@ -6,6 +6,7 @@ import { BaseElement } from '../types/BaseElement'
 
 export class ActionElement implements BaseElement {
     shape: shapes.basic.Generic
+    minWidth = 100
 
     constructor(shapeData: ShapeData, itemAttributes: ElementAttributes) {
         this.shape = this.createShape(shapeData, itemAttributes)
@@ -19,7 +20,7 @@ export class ActionElement implements BaseElement {
 
         return new shapes.standard.Polygon({
             position: shapeData.position,
-            size: { width: text.length * 12, height: 100 },
+            size: { width: this.getWidth(text.length), height: 100 },
             attrs: {
                 body: {
                     fill: Colors.Grassgreen,
@@ -32,5 +33,10 @@ export class ActionElement implements BaseElement {
                 },
             },
         })
+    }
+
+    private getWidth(textLength: number) {
+        const width = textLength * 12
+        return this.minWidth > width ? this.minWidth : width
     }
 }
