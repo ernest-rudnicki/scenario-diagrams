@@ -1,0 +1,4 @@
+export enum SentenceTypes {
+    BEING_IN_LOCATION = 'BEING_IN_LOCATION',
+    GOING_TO_LOCATION = 'GOING_TO_LOCATION',
+}

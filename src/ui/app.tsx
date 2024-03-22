@@ -77,12 +77,16 @@ const AppComponent = () => {
         ])
     })
 
+    const onSubmit = (text: string) => {
+        languageProcessor.convertToDiagramElements(text)
+    }
+
     return (
         <main class="h-full flex flex-col">
             <div class="h-full">
                 <div id="paper"></div>
             </div>
-            <BottomBar />
+            <BottomBar onSubmit={onSubmit} />
         </main>
     )
 }

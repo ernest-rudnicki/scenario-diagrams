@@ -11,7 +11,6 @@ export const BottomBar = (props: BottomBarProps) => {
         if (key !== 'Enter') return
 
         props.onSubmit(value())
-        setValue('')
     }
 
     return (
