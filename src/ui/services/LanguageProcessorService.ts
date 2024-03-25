@@ -2,7 +2,7 @@ import winkNLP, { Detail, WinkMethods } from 'wink-nlp'
 import model from 'wink-eng-lite-web-model'
 import { BaseElement } from '../types/BaseElement'
 import { LocationChangeService } from './LocationChangeService'
-import { SentenceTypes } from '../types/SentenceTypes'
+import { DiagramTypes } from '../types/DiagramTypes'
 import { nlpPatterns } from '../nlp-patterns/NlpPatterns'
 
 export class LanguageProcessorService {
@@ -28,7 +28,7 @@ export class LanguageProcessorService {
         const sentences = doc.sentences().out()
 
         switch (customEntities[0].type) {
-            case SentenceTypes.LOCATION_CHANGE:
+            case DiagramTypes.LOCATION_CHANGE:
                 return this.locationChangeService.processPossibleLocationChange(sentences)
             default:
                 return []
