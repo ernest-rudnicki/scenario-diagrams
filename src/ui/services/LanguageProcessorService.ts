@@ -1,62 +1,37 @@
 import winkNLP, { Detail, WinkMethods } from 'wink-nlp'
 import model from 'wink-eng-lite-web-model'
 import { BaseElement } from '../types/BaseElement'
-import { nlpPatterns } from '../nlp-patterns/NlpPatterns'
+import { LocationChangeService } from './LocationChangeService'
 import { SentenceTypes } from '../types/SentenceTypes'
-import { CharacterElement } from '../diagram-elements/CharacterElement'
-import { CharacterTypes } from '../types/CharacterTypes'
-import { ActionElement } from '../diagram-elements/ActionElement'
-import { LocationElement } from '../diagram-elements/LocationElement'
+import { nlpPatterns } from '../nlp-patterns/NlpPatterns'
 
 export class LanguageProcessorService {
     private nlp: WinkMethods = winkNLP(model)
 
+    private locationChangeService: LocationChangeService
+
     constructor() {
         this.nlp.learnCustomEntities(nlpPatterns)
+
+        this.locationChangeService = new LocationChangeService()
     }
 
     convertToDiagramElements = (text: string): BaseElement[] => {
-        const sentences = this.nlp.readDoc(text).sentences().out();
-
-        if (sentences.length === 2) {
-            return this.processPossibleLocationChange(text)
-        }
-
-
-        return []
-    }
-
-    private processPossibleLocationChange = (text: string): BaseElement[] => {
         const doc = this.nlp.readDoc(text)
-        const [from, to] = doc.customEntities().out(this.nlp.its.detail) as Detail[];
-        console.log(from, to)
-        
-        if(from.type === SentenceTypes.BEING_IN_LOCATION && to.type === SentenceTypes.GOING_TO_LOCATION) {
-            return this.locationFromElements(from)
+        const customEntities = doc.customEntities().out(this.nlp.its.detail) as Detail[]
+
+        if (customEntities.length !== 1) {
+            // TODO handle as error
+            return []
         }
-        
-        return [];
-    }
 
-    private locationFromElements = (from: Detail): BaseElement[] => {
-        const [character, verb, place] = this.stripUnnecessaryWords(from.value).split(' ')
-        return [
-            new CharacterElement(
-                { position: { x: 100, y: 30 } },
-                { text: character, type: CharacterTypes.Player }
-            ),
-            new ActionElement(
-                { position: { x: 100, y: 300 } },
-                { text: verb }
-            ),
-            new LocationElement(
-                { position: { x: 100, y: 200 } },
-                { text: place }
-            )
-        ]
-    }
+        const sentences = doc.sentences().out()
 
-    private stripUnnecessaryWords = (text: string): string => {
-        return text.replace(/(the|a|an|in|to|from)\s/g, '')
+        switch (customEntities[0].type) {
+            case SentenceTypes.LOCATION_CHANGE:
+                return this.locationChangeService.processPossibleLocationChange(sentences)
+            default:
+                return []
+        }
     }
 }

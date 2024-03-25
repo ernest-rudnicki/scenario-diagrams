@@ -2,10 +2,7 @@ import { render } from 'solid-js/web'
 import './index.css'
 import { onMount } from 'solid-js'
 import { BottomBar } from './components/BottomBar/BottomBar'
-import {
-    DiagramServicesProvider,
-    useDiagramServices,
-} from './providers/DiagramServicesProvider'
+import { DiagramServicesProvider, useDiagramServices } from './providers/DiagramServicesProvider'
 
 const AppComponent = () => {
     const { canvas, languageProcessor } = useDiagramServices()
@@ -15,9 +12,8 @@ const AppComponent = () => {
     })
 
     const onSubmit = (text: string) => {
-       const elements =  languageProcessor.convertToDiagramElements(text)
-       console.log(elements);
-       canvas.addElements(elements)
+        const elements = languageProcessor.convertToDiagramElements(text)
+        canvas.addElements(elements)
     }
 
     return (
