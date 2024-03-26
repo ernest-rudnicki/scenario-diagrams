@@ -2,25 +2,18 @@ import { shapes } from 'jointjs'
 import { Colors } from '../types/Colors'
 import { ShapeData } from '../types/Position'
 import { ElementAttributes } from '../types/ElementAttributes'
-import { BaseElement } from '../types/BaseElement'
+import { DiagramElement } from './DiagramElement'
 
-export class ActionElement implements BaseElement {
-    shape: shapes.basic.Generic
+export class ActionElement extends DiagramElement {
     minWidth = 100
 
     constructor(shapeData: ShapeData, itemAttributes: ElementAttributes) {
-        this.shape = this.createShape(shapeData, itemAttributes)
-    }
-
-    private createShape(
-        shapeData: ShapeData,
-        itemAttributes: ElementAttributes
-    ) {
         const { text } = itemAttributes
+        const width = text.length * 12
 
-        return new shapes.standard.Polygon({
+        const shape = new shapes.standard.Polygon({
             position: shapeData.position,
-            size: { width: this.getWidth(text.length), height: 100 },
+            size: { width: width < 100 ? 100 : width, height: 100 },
             attrs: {
                 body: {
                     fill: Colors.Grassgreen,
@@ -33,10 +26,7 @@ export class ActionElement implements BaseElement {
                 },
             },
         })
-    }
 
-    private getWidth(textLength: number) {
-        const width = textLength * 12
-        return this.minWidth > width ? this.minWidth : width
+        super(shape)
     }
 }

@@ -2,22 +2,13 @@ import { shapes } from 'jointjs'
 import { ShapeData } from '../types/Position'
 import { Colors } from '../types/Colors'
 import { ElementAttributes } from '../types/ElementAttributes'
-import { BaseElement } from '../types/BaseElement'
+import { DiagramElement } from './DiagramElement'
 
-export class LocationElement implements BaseElement {
-    shape: shapes.basic.Generic
-
+export class LocationElement extends DiagramElement {
     constructor(shapeData: ShapeData, itemAttributes: ElementAttributes) {
-        this.shape = this.createShape(shapeData, itemAttributes)
-    }
-
-    private createShape(
-        shapeData: ShapeData,
-        itemAttributes: ElementAttributes
-    ) {
         const { text } = itemAttributes
 
-        return new shapes.standard.Ellipse({
+        const shape = new shapes.standard.Ellipse({
             position: shapeData.position,
             size: { width: text.length * 16, height: 80 },
             attrs: {
@@ -25,5 +16,7 @@ export class LocationElement implements BaseElement {
                 text: { text, fill: Colors.Black },
             },
         })
+
+        super(shape)
     }
 }

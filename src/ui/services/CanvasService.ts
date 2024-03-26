@@ -1,5 +1,5 @@
-import { dia } from 'jointjs'
-import { BaseElement } from '../types/BaseElement'
+import { dia, shapes } from 'jointjs'
+import { DiagramElement } from '../diagram-elements/DiagramElement'
 
 export class CanvasService {
     private readonly graph = new dia.Graph()
@@ -15,7 +15,16 @@ export class CanvasService {
         })
     }
 
-    addElements(element: BaseElement[]): void {
+    createDiagram(elements: DiagramElement[], links: shapes.standard.Link[]): void {
+        this.addElements(elements)
+        this.addLinks(links)
+    }
+
+    private addElements(element: DiagramElement[]): void {
         this.graph.addCells(element.map((el) => el.shape))
+    }
+
+    private addLinks(links: shapes.standard.Link[]): void {
+        links.forEach((link) => link.addTo(this.graph))
     }
 }

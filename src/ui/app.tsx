@@ -12,8 +12,8 @@ const AppComponent = () => {
     })
 
     const onSubmit = (text: string) => {
-        const elements = languageProcessor.convertToDiagramElements(text)
-        canvas.addElements(elements)
+        const { elements, links } = languageProcessor.convertToDiagramElements(text)
+        canvas.createDiagram(elements, links)
     }
 
     return (

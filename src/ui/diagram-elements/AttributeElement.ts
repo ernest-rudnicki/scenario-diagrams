@@ -3,30 +3,18 @@ import { Colors } from '../types/Colors'
 import { ShapeData } from '../types/Position'
 import { CharacterAttrAttributes } from '../types/CharacterAttrAttributes'
 import { AttributeColorMap } from '../maps/AttributeColorMap'
-import { BaseElement } from '../types/BaseElement'
+import { DiagramElement } from './DiagramElement'
 
-export class AttributeElement implements BaseElement {
-    shape: shapes.basic.Generic
+export class AttributeElement extends DiagramElement {
+    constructor(shapeData: ShapeData, characterAttributes: CharacterAttrAttributes) {
+        const { text } = characterAttributes
 
-    constructor(
-        shapeData: ShapeData,
-        characterAttributes: CharacterAttrAttributes
-    ) {
-        this.shape = this.createShape(shapeData, characterAttributes)
-    }
-
-    private createShape(
-        shapeData: ShapeData,
-        itemAttributes: CharacterAttrAttributes
-    ) {
-        const { text } = itemAttributes
-
-        return new shapes.basic.Path({
+        const shape = new shapes.basic.Path({
             position: shapeData.position,
             size: { width: text.length * 10, height: 20 },
             attrs: {
                 path: {
-                    fill: AttributeColorMap[itemAttributes.type],
+                    fill: AttributeColorMap[characterAttributes.type],
                     d: 'm 0 2 l 7 0 l 0 -1 l -2 -1 l -5 0 l 0 2',
                 },
                 text: {
@@ -37,5 +25,7 @@ export class AttributeElement implements BaseElement {
                 },
             },
         })
+
+        super(shape)
     }
 }
