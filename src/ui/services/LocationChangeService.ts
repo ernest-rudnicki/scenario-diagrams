@@ -5,42 +5,43 @@ import { CharacterTypes } from '../types/CharacterTypes'
 import { stripUnnecessaryWords } from '../utils/strip-unnecessary-words'
 import { capitalizeFirstLetter } from '../utils/capitalize-first-letter'
 import { ProcessingResult } from '../types/ProcessingResult'
-import { LineElement } from '../diagram-elements/LineElement'
 
 export class LocationChangeService {
     processPossibleLocationChange = (sentences: string[]): ProcessingResult => {
         const [from, to] = sentences
-        const diagramData = stripUnnecessaryWords(from).split(' ')
-        const placeTo = stripUnnecessaryWords(to).split(' ')[2]
-        const fromDiagram = this.locationFromElements(diagramData)
-        const toDiagram = this.locationToElements(diagramData, placeTo)
-        const line = new LineElement({ position: { x: 500, y: 50 } }, 600)
+        const fromData = stripUnnecessaryWords(from).split(' ')
+        const toData = stripUnnecessaryWords(to).split(' ')
+
+        const character = fromData[0]
+        const verb = fromData[1]
+        const place = fromData[2]
+        const placeTo = toData[2]
+
+        const fromDiagram = this.locationFromElements(character, verb, place, placeTo)
+        const toDiagram = this.locationToElements(character, verb, place, placeTo)
 
         return {
-            elements: [...fromDiagram.elements, ...toDiagram.elements, line],
+            elements: [...fromDiagram.elements, ...toDiagram.elements],
             links: [...fromDiagram.links, ...toDiagram.links],
         }
     }
 
-    private locationFromElements = (data: string[]): ProcessingResult => {
-        const [character, verb, place] = data
-
+    private locationFromElements = (character: string, verb: string, place: string, placeTo: string): ProcessingResult => {
         const characterElement = new CharacterElement(
             { position: { x: 100, y: 100 } },
             { text: capitalizeFirstLetter(character), type: CharacterTypes.Player }
         )
         const actionElement = new ActionElement({ position: { x: 300, y: 100 } }, { text: verb })
         const locationElement = new LocationElement({ position: { x: 100, y: 400 } }, { text: place })
+        const locationToElement = new LocationElement({ position: { x: 300, y: 400 } }, { text: placeTo })
 
         return {
-            elements: [characterElement, actionElement, locationElement],
+            elements: [characterElement, actionElement, locationElement, locationToElement],
             links: [characterElement.linkTo(actionElement), characterElement.linkTo(locationElement)],
         }
     }
 
-    private locationToElements = (data: string[], placeTo: string): ProcessingResult => {
-        const [character, verb, place] = data
-
+    private locationToElements = (character: string, verb: string, place: string, placeTo: string): ProcessingResult => {
         const characterElement = new CharacterElement(
             { position: { x: 600, y: 100 } },
             { text: capitalizeFirstLetter(character), type: CharacterTypes.Player }

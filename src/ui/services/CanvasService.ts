@@ -1,5 +1,6 @@
 import { dia, shapes } from 'jointjs'
 import { DiagramElement } from '../diagram-elements/DiagramElement'
+import { LineElement } from '../diagram-elements/LineElement'
 
 export class CanvasService {
     private readonly graph = new dia.Graph()
@@ -16,6 +17,7 @@ export class CanvasService {
     }
 
     createDiagram(elements: DiagramElement[], links: shapes.standard.Link[]): void {
+        this.setupScenarioProductionElements()
         this.addElements(elements)
         this.addLinks(links)
     }
@@ -26,5 +28,16 @@ export class CanvasService {
 
     private addLinks(links: shapes.standard.Link[]): void {
         links.forEach((link) => link.addTo(this.graph))
+    }
+
+    private setupScenarioProductionElements(): void {
+        const line = new LineElement({ position: { x: 500, y: 50 } }, 600)
+        const arrow = new shapes.standard.Link({
+            source: { x: 350, y: 300 },
+            target: { x: 650, y: 300 },
+        })
+
+        this.graph.addCells([line.shape])
+        arrow.addTo(this.graph)
     }
 }
