@@ -13,7 +13,7 @@ export class LanguageProcessorService {
     constructor() {
         this.nlp.learnCustomEntities(nlpPatterns)
 
-        this.locationChangeService = new LocationChangeService()
+        this.locationChangeService = new LocationChangeService(this.nlp)
     }
 
     convertToDiagramElements = (text: string): ProcessingResult | null => {

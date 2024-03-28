@@ -2,20 +2,31 @@ import { ActionElement } from '../diagram-elements/ActionElement'
 import { CharacterElement } from '../diagram-elements/CharacterElement'
 import { LocationElement } from '../diagram-elements/LocationElement'
 import { CharacterTypes } from '../types/CharacterTypes'
-import { stripUnnecessaryWords } from '../utils/strip-unnecessary-words'
 import { capitalizeFirstLetter } from '../utils/capitalize-first-letter'
 import { ProcessingResult } from '../types/ProcessingResult'
+import { Detail, WinkMethods } from 'wink-nlp'
+import { stripUnnecessaryWords } from '../utils/strip-unnecessary-words'
 
 export class LocationChangeService {
+    constructor(private nlp: WinkMethods) {}
+
     processPossibleLocationChange = (sentences: string[]): ProcessingResult => {
         const [from, to] = sentences
-        const fromData = stripUnnecessaryWords(from).split(' ')
-        const toData = stripUnnecessaryWords(to).split(' ')
 
-        const character = fromData[0]
-        const verb = fromData[1]
-        const place = fromData[2]
-        const placeTo = toData[2]
+        const fromData = this.nlp.readDoc(from).customEntities().out(this.nlp.its.detail) as Detail[]
+        const toDoc = this.nlp.readDoc(to)
+        const toData = toDoc.customEntities().out(this.nlp.its.detail) as Detail[]
+        const character = stripUnnecessaryWords(fromData[0].value)
+
+        const verbIndex = toDoc
+            .tokens()
+            .out(this.nlp.its.pos)
+            .findIndex((pos: string) => pos === 'VERB')
+
+        const verb = toDoc.tokens().out()[verbIndex]
+
+        const place = stripUnnecessaryWords(fromData[1].value)
+        const placeTo = stripUnnecessaryWords(toData[1].value)
 
         const fromDiagram = this.locationFromElements(character, verb, place, placeTo)
         const toDiagram = this.locationToElements(character, verb, place, placeTo)

@@ -8,7 +8,7 @@ import { DiagramElement } from './DiagramElement'
 export class CharacterElement extends DiagramElement {
     constructor(shapeData: ShapeData, characterAttributes: CharacterAttributes) {
         const { text, type } = characterAttributes
-        const textWidth = text.length * 20
+        const textWidth = text.length * 12
 
         const shape = new shapes.standard.Rectangle({
             position: shapeData.position,
