@@ -1,12 +1,12 @@
 import { shapes } from 'jointjs'
 import { Colors } from '../types/Colors'
 import { ShapeData } from '../types/Position'
-import { CharacterAttrAttributes } from '../types/CharacterAttrAttributes'
+import { CharacterAttrProps } from '../types/CharacterAttrProps'
 import { AttributeColorMap } from '../maps/AttributeColorMap'
 import { DiagramElement } from './DiagramElement'
 
 export class AttributeElement extends DiagramElement {
-    constructor(shapeData: ShapeData, characterAttributes: CharacterAttrAttributes) {
+    constructor(shapeData: ShapeData, characterAttributes: CharacterAttrProps) {
         const { text } = characterAttributes
 
         const shape = new shapes.basic.Path({
