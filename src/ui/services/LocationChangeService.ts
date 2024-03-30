@@ -5,16 +5,20 @@ import { capitalizeFirstLetter } from '../utils/capitalize-first-letter'
 import { ProcessingResult } from '../types/ProcessingResult'
 import { Detail, WinkMethods } from 'wink-nlp'
 import { stripUnnecessaryWords } from '../utils/strip-unnecessary-words'
+import { phrasePatterns } from '../nlp-patterns/NlpPatterns'
 
 export class LocationChangeService {
     constructor(private nlp: WinkMethods) {}
 
     processPossibleLocationChange = (sentences: string[]): ProcessingResult => {
+        this.nlp.learnCustomEntities(phrasePatterns)
+
         const [from, to] = sentences
 
         const fromData = this.nlp.readDoc(from).customEntities().out(this.nlp.its.detail) as Detail[]
         const toDoc = this.nlp.readDoc(to)
         const toData = toDoc.customEntities().out(this.nlp.its.detail) as Detail[]
+
         const character = stripUnnecessaryWords(fromData[0].value)
 
         const place = stripUnnecessaryWords(fromData[1].value)
