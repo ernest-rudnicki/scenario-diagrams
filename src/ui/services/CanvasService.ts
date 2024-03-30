@@ -22,8 +22,11 @@ export class CanvasService {
         this.addLinks(links)
     }
 
-    private addElements(element: DiagramElement[]): void {
-        this.graph.addCells(element.map((el) => el.shape))
+    private addElements(elements: DiagramElement[]): void {
+        elements.forEach((element) => {
+            this.graph.addCell(element.shape)
+            element.innerElements.forEach((innerElement) => this.graph.addCell(innerElement))
+        })
     }
 
     private addLinks(links: shapes.standard.Link[]): void {

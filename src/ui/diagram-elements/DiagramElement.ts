@@ -1,10 +1,17 @@
 import { shapes } from 'jointjs'
 
 export abstract class DiagramElement {
-    constructor(private _shape: shapes.basic.Generic) {}
+    constructor(
+        private _shape: shapes.basic.Generic,
+        private _innerElements: shapes.basic.Generic[] = []
+    ) {}
 
     get shape() {
         return this._shape
+    }
+
+    get innerElements() {
+        return this._innerElements
     }
 
     linkTo(element: DiagramElement): shapes.standard.Link {
