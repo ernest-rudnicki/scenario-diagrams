@@ -5,6 +5,7 @@ import { DiagramTypes } from '../types/DiagramTypes'
 import { sentencePatterns } from '../nlp-patterns/NlpPatterns'
 import { ProcessingResult } from '../types/ProcessingResult'
 import { CustomEntitiesHashMap, DetailEntity } from '../types/CustomEntitiesHashMap'
+import { stripUnnecessaryWords } from '../utils/strip-unnecessary-words'
 
 export class LanguageProcessorService {
     private nlp: WinkMethods = winkNLP(model)
@@ -29,10 +30,10 @@ export class LanguageProcessorService {
         }
 
         if (customEntitiesHashMap[DiagramTypes.LOCATION_FROM] && customEntitiesHashMap[DiagramTypes.LOCATION_TO]) {
-            return this.locationChangeService.processPossibleLocationChange([
-                customEntitiesHashMap[DiagramTypes.LOCATION_FROM].value,
-                customEntitiesHashMap[DiagramTypes.LOCATION_TO].value,
-            ])
+            return this.locationChangeService.processPossibleLocationChange(
+                [customEntitiesHashMap[DiagramTypes.LOCATION_FROM].value, customEntitiesHashMap[DiagramTypes.LOCATION_TO].value],
+                characterAttributes
+            )
         }
 
         return null
@@ -46,7 +47,7 @@ export class LanguageProcessorService {
     }
 
     extractCharacterAttributes = (doc: Document, entity: DetailEntity): string[] => {
-        const words = doc.customEntities().itemAt(entity.index).parentSentence().out().split(' ')
+        const words = stripUnnecessaryWords(doc.customEntities().itemAt(entity.index).parentSentence().out()).split(' ')
         const attributes = []
 
         for (let i = 0; i < words.length; i++) {

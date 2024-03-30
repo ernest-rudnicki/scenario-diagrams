@@ -3,7 +3,7 @@ import { shapes } from 'jointjs'
 export abstract class DiagramElement {
     constructor(
         private _shape: shapes.basic.Generic,
-        private _innerElements: shapes.basic.Generic[] = []
+        private _innerElements: DiagramElement[] = []
     ) {}
 
     get shape() {

@@ -25,7 +25,7 @@ export class CanvasService {
     private addElements(elements: DiagramElement[]): void {
         elements.forEach((element) => {
             this.graph.addCell(element.shape)
-            element.innerElements.forEach((innerElement) => this.graph.addCell(innerElement))
+            element.innerElements.forEach((innerElement) => this.graph.addCell(innerElement.shape))
         })
     }
 

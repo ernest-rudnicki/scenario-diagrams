@@ -7,14 +7,14 @@ import { DiagramElement } from './DiagramElement'
 
 export class AttributeElement extends DiagramElement {
     constructor(shapeData: ShapeData, characterAttributes: CharacterAttrProps) {
-        const { text } = characterAttributes
+        const { text, type } = characterAttributes
 
         const shape = new shapes.basic.Path({
             position: shapeData.position,
             size: { width: text.length * 10, height: 20 },
             attrs: {
                 path: {
-                    fill: AttributeColorMap[characterAttributes.type],
+                    fill: AttributeColorMap[type],
                     d: 'm 0 2 l 7 0 l 0 -1 l -2 -1 l -5 0 l 0 2',
                 },
                 text: {

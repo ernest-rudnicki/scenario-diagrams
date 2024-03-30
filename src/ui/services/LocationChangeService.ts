@@ -10,7 +10,7 @@ import { phrasePatterns } from '../nlp-patterns/NlpPatterns'
 export class LocationChangeService {
     constructor(private nlp: WinkMethods) {}
 
-    processPossibleLocationChange = (sentences: string[]): ProcessingResult => {
+    processPossibleLocationChange = (sentences: string[], characterAttributes: string[]): ProcessingResult => {
         this.nlp.learnCustomEntities(phrasePatterns)
 
         const [from, to] = sentences
@@ -24,8 +24,8 @@ export class LocationChangeService {
         const place = stripUnnecessaryWords(fromData[1].value)
         const placeTo = stripUnnecessaryWords(toData[1].value)
 
-        const fromDiagram = this.locationFromElements(character, place, placeTo)
-        const toDiagram = this.locationToElements(character, place, placeTo)
+        const fromDiagram = this.locationFromElements(character, place, placeTo, characterAttributes)
+        const toDiagram = this.locationToElements(character, place, placeTo, characterAttributes)
 
         return {
             elements: [...fromDiagram.elements, ...toDiagram.elements],
@@ -33,10 +33,11 @@ export class LocationChangeService {
         }
     }
 
-    private locationFromElements = (character: string, place: string, placeTo: string): ProcessingResult => {
+    private locationFromElements = (character: string, place: string, placeTo: string, characterAttributes: string[]): ProcessingResult => {
         const characterElement = new CharacterElement(
             { position: { x: 100, y: 100 } },
-            { text: capitalizeFirstLetter(character), type: CharacterTypes.Player }
+            { text: capitalizeFirstLetter(character), type: CharacterTypes.Player },
+            characterAttributes
         )
         const locationElement = new LocationElement({ position: { x: 100, y: 400 } }, { text: place })
         const locationToElement = new LocationElement({ position: { x: 300, y: 400 } }, { text: placeTo })
@@ -47,10 +48,11 @@ export class LocationChangeService {
         }
     }
 
-    private locationToElements = (character: string, place: string, placeTo: string): ProcessingResult => {
+    private locationToElements = (character: string, place: string, placeTo: string, characterAttributes: string[]): ProcessingResult => {
         const characterElement = new CharacterElement(
             { position: { x: 600, y: 100 } },
-            { text: capitalizeFirstLetter(character), type: CharacterTypes.Player }
+            { text: capitalizeFirstLetter(character), type: CharacterTypes.Player },
+            characterAttributes
         )
         const locationElement = new LocationElement({ position: { x: 600, y: 400 } }, { text: place })
         const locationToElement = new LocationElement({ position: { x: 800, y: 400 } }, { text: placeTo })
