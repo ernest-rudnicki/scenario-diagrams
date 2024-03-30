@@ -11,6 +11,10 @@ export const sentencePatterns: CustomEntityExample[] = [
         name: DiagramTypes.LOCATION_TO,
         patterns: ['[|DET] [|ADJ] [NOUN|PROPN] [goes|arrives|moves|comes|travels] to [|DET] [NOUN|PROPN]'],
     },
+    {
+        name: DiagramTypes.CHARACTER_ATTRIBUTES,
+        patterns: ['[attributes|skills|attribute|skill] [|of|for] [|DET] [NOUN|PROPN]'],
+    },
 ]
 
 export const phrasePatterns: CustomEntityExample[] = [
