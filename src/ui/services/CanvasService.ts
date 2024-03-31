@@ -36,8 +36,8 @@ export class CanvasService {
     private setupScenarioProductionElements(): void {
         const line = new LineElement({ position: { x: 500, y: 50 } }, 600)
         const arrow = new shapes.standard.Link({
-            source: { x: 350, y: 300 },
-            target: { x: 650, y: 300 },
+            source: { x: 450, y: 300 },
+            target: { x: 550, y: 300 },
         })
 
         this.graph.addCells([line.shape])

@@ -6,17 +6,20 @@ import { sentencePatterns } from '../nlp-patterns/NlpPatterns'
 import { ProcessingResult } from '../types/ProcessingResult'
 import { CustomEntitiesHashMap, DetailEntity } from '../types/CustomEntitiesHashMap'
 import { stripUnnecessaryWords } from '../utils/strip-unnecessary-words'
+import { ItemGrabService } from './ItemGrabService'
 
 export class LanguageProcessorService {
     private nlp: WinkMethods = winkNLP(model)
 
     private locationChangeService: LocationChangeService
+    private itemGrabService: ItemGrabService
 
     constructor() {
         this.locationChangeService = new LocationChangeService(this.nlp)
+        this.itemGrabService = new ItemGrabService(this.nlp)
     }
 
-    convertToDiagramElements = (text: string): ProcessingResult | null => {
+    convertToDiagramElements = (text: string): ProcessingResult => {
         this.nlp.learnCustomEntities(sentencePatterns)
 
         const doc = this.nlp.readDoc(text)
@@ -36,7 +39,14 @@ export class LanguageProcessorService {
             )
         }
 
-        return null
+        if (customEntitiesHashMap[DiagramTypes.LOCATION_FROM] && customEntitiesHashMap[DiagramTypes.ITEM_GRAB]) {
+            return this.itemGrabService.processPossibleItemGrab(
+                [customEntitiesHashMap[DiagramTypes.LOCATION_FROM].value, customEntitiesHashMap[DiagramTypes.ITEM_GRAB].value],
+                characterAttributes
+            )
+        }
+
+        return { elements: [], links: [] }
     }
 
     getCustomEntitiesAsHashMap(customEntities: Detail[]): CustomEntitiesHashMap {

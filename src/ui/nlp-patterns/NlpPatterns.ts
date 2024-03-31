@@ -15,6 +15,10 @@ export const sentencePatterns: CustomEntityExample[] = [
         name: DiagramTypes.CHARACTER_ATTRIBUTES,
         patterns: ['[attributes|skills|attribute|skill] [|of|for] [|DET] [NOUN|PROPN]'],
     },
+    {
+        name: DiagramTypes.ITEM_GRAB,
+        patterns: ['[|DET] [NOUN|PROPN] [grabs|takes|collects|finds] [|DET] [|ADJ] [NOUN|PROPN]'],
+    },
 ]
 
 export const phrasePatterns: CustomEntityExample[] = [
