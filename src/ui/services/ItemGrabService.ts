@@ -66,16 +66,9 @@ export class ItemGrabService {
         const containerElement = new ContainerElement({ position: { x: 900, y: 350 } }, { text: 'Container' })
         const itemElement = new ItemElement({ position: { x: 900, y: 500 } }, { text: item })
 
-        const actionElement = new ActionElement({ position: { x: 900, y: 100 } }, { text: verb })
-
         return {
-            elements: [characterElement, locationElement, containerElement, actionElement, itemElement],
-            links: [
-                characterElement.linkTo(locationElement),
-                characterElement.linkTo(containerElement),
-                characterElement.linkTo(actionElement),
-                itemElement.linkTo(containerElement),
-            ],
+            elements: [characterElement, locationElement, containerElement, itemElement],
+            links: [characterElement.linkTo(locationElement), characterElement.linkTo(containerElement), itemElement.linkTo(containerElement)],
         }
     }
 }
