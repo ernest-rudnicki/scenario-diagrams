@@ -3,4 +3,5 @@ export enum DiagramTypes {
     LOCATION_TO = 'LOCATION_TO',
     CHARACTER_ATTRIBUTES = 'CHARACTER_ATTRIBUTES',
     ITEM_GRAB = 'ITEM_GRAB',
+    NPC_TALK = 'NPC_TALK',
 }

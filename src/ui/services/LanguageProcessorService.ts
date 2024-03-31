@@ -7,16 +7,19 @@ import { ProcessingResult } from '../types/ProcessingResult'
 import { CustomEntitiesHashMap, DetailEntity } from '../types/CustomEntitiesHashMap'
 import { stripUnnecessaryWords } from '../utils/strip-unnecessary-words'
 import { ItemGrabService } from './ItemGrabService'
+import { NpcTalkService } from './NpcTalkService'
 
 export class LanguageProcessorService {
     private nlp: WinkMethods = winkNLP(model)
 
     private locationChangeService: LocationChangeService
     private itemGrabService: ItemGrabService
+    private npcTalkService: NpcTalkService
 
     constructor() {
         this.locationChangeService = new LocationChangeService(this.nlp)
         this.itemGrabService = new ItemGrabService(this.nlp)
+        this.npcTalkService = new NpcTalkService(this.nlp)
     }
 
     convertToDiagramElements = (text: string): ProcessingResult => {
@@ -42,6 +45,13 @@ export class LanguageProcessorService {
         if (customEntitiesHashMap[DiagramTypes.LOCATION_FROM] && customEntitiesHashMap[DiagramTypes.ITEM_GRAB]) {
             return this.itemGrabService.processPossibleItemGrab(
                 [customEntitiesHashMap[DiagramTypes.LOCATION_FROM].value, customEntitiesHashMap[DiagramTypes.ITEM_GRAB].value],
+                characterAttributes
+            )
+        }
+
+        if (customEntitiesHashMap[DiagramTypes.LOCATION_FROM] && customEntitiesHashMap[DiagramTypes.NPC_TALK]) {
+            return this.npcTalkService.processPossibleNpcTalk(
+                [customEntitiesHashMap[DiagramTypes.LOCATION_FROM].value, customEntitiesHashMap[DiagramTypes.NPC_TALK].value],
                 characterAttributes
             )
         }
