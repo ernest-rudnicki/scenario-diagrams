@@ -30,6 +30,14 @@ export const sentencePatterns: CustomEntityExample[] = [
             '[|DET] [NOUN|PROPN] [uses|consumes|applies] [|DET] [NOUN|PROPN] of [NOUN|PROPN]',
         ],
     },
+    {
+        name: DiagramTypes.ATTRIBUTE_INCREASE,
+        patterns: ['[|DET] [NOUN|PROPN] is increased by'],
+    },
+    {
+        name: DiagramTypes.ATTRIBUTE_DECREASE,
+        patterns: ['[|DET] [NOUN|PROPN] is decreased by'],
+    },
 ]
 
 export const phrasePatterns: CustomEntityExample[] = [

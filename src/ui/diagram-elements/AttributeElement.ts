@@ -21,7 +21,7 @@ export class AttributeElement extends DiagramElement {
                     text,
                     fill: Colors.Black,
                     'ref-y': -25,
-                    'ref-x': 35,
+                    textAnchor: 'middle',
                 },
             },
         })

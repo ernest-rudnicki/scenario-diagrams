@@ -8,6 +8,7 @@ import { CustomEntitiesHashMap, DetailEntity } from '../types/CustomEntitiesHash
 import { stripUnnecessaryWords } from '../utils/strip-unnecessary-words'
 import { ItemGrabService } from './ItemGrabService'
 import { NpcTalkService } from './NpcTalkService'
+import { ItemUseService } from './ItemUseService'
 
 export class LanguageProcessorService {
     private nlp: WinkMethods = winkNLP(model)
@@ -15,11 +16,13 @@ export class LanguageProcessorService {
     private locationChangeService: LocationChangeService
     private itemGrabService: ItemGrabService
     private npcTalkService: NpcTalkService
+    private itemUseService: ItemUseService
 
     constructor() {
         this.locationChangeService = new LocationChangeService(this.nlp)
         this.itemGrabService = new ItemGrabService(this.nlp)
         this.npcTalkService = new NpcTalkService(this.nlp)
+        this.itemUseService = new ItemUseService(this.nlp)
     }
 
     convertToDiagramElements = (text: string): ProcessingResult => {
@@ -56,12 +59,33 @@ export class LanguageProcessorService {
             )
         }
 
+        if (customEntitiesHashMap[DiagramTypes.ITEM_USE] && (customEntitiesHashMap[DiagramTypes.ATTRIBUTE_INCREASE] || customEntitiesHashMap[DiagramTypes.ATTRIBUTE_DECREASE])) {
+            const sentences = doc.sentences().out()
+            return this.itemUseService.processPossibleItemUse(
+                customEntitiesHashMap[DiagramTypes.ITEM_USE].value,
+                characterAttributes,
+                customEntitiesHashMap[DiagramTypes.ATTRIBUTE_INCREASE]?.map((entity) => sentences[entity.index]),
+                customEntitiesHashMap[DiagramTypes.ATTRIBUTE_DECREASE]?.map((entity) => sentences[entity.index]),
+            )
+        }
+
         return { elements: [], links: [] }
     }
 
     getCustomEntitiesAsHashMap(customEntities: Detail[]): CustomEntitiesHashMap {
         return customEntities.reduce((acc, entity, index) => {
-            acc[entity.type as DiagramTypes] = { ...entity, index: index }
+            const type = entity.type as DiagramTypes
+            if (type === DiagramTypes.ATTRIBUTE_INCREASE || type === DiagramTypes.ATTRIBUTE_DECREASE) {
+                if(acc[type]) {
+                    acc[type].push({ ...entity, index: index })
+                }
+                else {
+                    acc[type] = [{ ...entity, index: index}]
+                } 
+                return acc;
+            }
+
+            acc[type] = { ...entity, index: index }
             return acc
         }, {} as CustomEntitiesHashMap)
     }
