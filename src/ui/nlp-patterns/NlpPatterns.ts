@@ -23,6 +23,13 @@ export const sentencePatterns: CustomEntityExample[] = [
         name: DiagramTypes.NPC_TALK,
         patterns: ['[|DET] [NOUN|PROPN] [talks|speaks|chats|communicates] to [|DET] [NOUN|PROPN]'],
     },
+    {
+        name: DiagramTypes.ITEM_USE,
+        patterns: [
+            '[|DET] [NOUN|PROPN] [uses|consumes|applies] [|DET] [|ADJ] [NOUN|PROPN]',
+            '[|DET] [NOUN|PROPN] [uses|consumes|applies] [|DET] [NOUN|PROPN] of [NOUN|PROPN]',
+        ],
+    },
 ]
 
 export const phrasePatterns: CustomEntityExample[] = [
