@@ -38,6 +38,10 @@ export const sentencePatterns: CustomEntityExample[] = [
         name: DiagramTypes.ATTRIBUTE_DECREASE,
         patterns: ['[|DET] [NOUN|PROPN] is decreased by'],
     },
+    {
+        name: DiagramTypes.KILL_ENEMY,
+        patterns: ['[|DET] [|ADJ] [NOUN|PROPN] [kills|defeats|eliminates] [|DET] [|ADJ] [NOUN|PROPN] with [|DET] [|ADJ] [NOUN|PROPN]'],
+    },
 ]
 
 export const phrasePatterns: CustomEntityExample[] = [

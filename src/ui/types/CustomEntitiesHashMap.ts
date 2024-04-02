@@ -10,6 +10,7 @@ export type CustomEntitiesHashMap = {
     [DiagramTypes.ATTRIBUTE_INCREASE]: DetailEntity[]
     [DiagramTypes.ATTRIBUTE_DECREASE]: DetailEntity[]
     [DiagramTypes.ITEM_USE]: DetailEntity
+    [DiagramTypes.KILL_ENEMY]: DetailEntity
 }
 
 export interface DetailEntity extends Detail {
