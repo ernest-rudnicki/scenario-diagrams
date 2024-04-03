@@ -1,41 +1,52 @@
 import { Detail, WinkMethods } from 'wink-nlp'
 import { ProcessingResult } from '../types/ProcessingResult'
 import { phrasePatterns } from '../nlp-patterns/NlpPatterns'
-import { stripUnnecessaryWords } from '../utils/strip-unnecessary-words';
-import { AttributeChange } from '../types/AttributeChange';
-import { CharacterElement } from '../diagram-elements/CharacterElement';
-import { capitalizeFirstLetter } from '../utils/capitalize-first-letter';
-import { CharacterTypes } from '../types/CharacterTypes';
-import { ContainerElement } from '../diagram-elements/ContainerElement';
-import { ItemElement } from '../diagram-elements/ItemElement';
-import { ActionElement } from '../diagram-elements/ActionElement';
+import { stripUnnecessaryWords } from '../utils/strip-unnecessary-words'
+import { AttributeChange } from '../types/AttributeChange'
+import { CharacterElement } from '../diagram-elements/CharacterElement'
+import { capitalizeFirstLetter } from '../utils/capitalize-first-letter'
+import { CharacterTypes } from '../types/CharacterTypes'
+import { ContainerElement } from '../diagram-elements/ContainerElement'
+import { ItemElement } from '../diagram-elements/ItemElement'
+import { ActionElement } from '../diagram-elements/ActionElement'
+import { getAttributeChange } from '../utils/get-attribute-change'
 
 export class ItemUseService {
     constructor(private nlp: WinkMethods) {}
 
-    processPossibleItemUse(itemUse: string, notChangedAttributes: string[], attributeIncrease?: string[], attributeDecrease?: string[]): ProcessingResult {
+    processPossibleItemUse(
+        itemUse: string,
+        notChangedAttributes: string[],
+        attributeIncrease?: string[],
+        attributeDecrease?: string[]
+    ): ProcessingResult {
         this.nlp.learnCustomEntities(phrasePatterns)
-        const itemUseDoc = this.nlp.readDoc(itemUse);
+        const itemUseDoc = this.nlp.readDoc(itemUse)
         const itemUseData = itemUseDoc.customEntities().out(this.nlp.its.detail) as Detail[]
-        
+
         const character = stripUnnecessaryWords(itemUseData[0].value)
         const verbIndex = [(itemUseDoc.tokens().out(this.nlp.its.pos) as string[]).findIndex((pos) => pos === 'VERB')]
         const verb = itemUse.split(' ')[verbIndex[0]]
-        const item = stripUnnecessaryWords(itemUse.split(' ').slice(verbIndex[0] + 1).join(' '))
+        const item = stripUnnecessaryWords(
+            itemUse
+                .split(' ')
+                .slice(verbIndex[0] + 1)
+                .join(' ')
+        )
 
-        const attributeIncreaseData = this.getAttributeChange(attributeIncrease)
-        const attributeDecreaseData = this.getAttributeChange(attributeDecrease)
+        const attributeIncreaseData = getAttributeChange(this.nlp, attributeIncrease)
+        const attributeDecreaseData = getAttributeChange(this.nlp, attributeDecrease)
 
         const plainAttributes = [
             ...attributeIncreaseData.map((attr) => attr.name),
             ...attributeDecreaseData.map((attr) => attr.name),
-            ...notChangedAttributes
+            ...notChangedAttributes,
         ]
 
         const changedAttributes = [
             ...attributeIncreaseData.map((attr) => `${attr.name} +${attr.value}`),
             ...attributeDecreaseData.map((attr) => `${attr.name} -${attr.value}`),
-            ...notChangedAttributes
+            ...notChangedAttributes,
         ]
 
         const leftSideDiagram = this.leftSideDiagram(character, verb, item, plainAttributes)
@@ -56,12 +67,15 @@ export class ItemUseService {
 
         const actionElement = new ActionElement({ position: { x: 300, y: 100 } }, { text: verb })
 
-        return { elements: [characterElement, containerElement, itemElement, actionElement], links: [
-            characterElement.linkTo(containerElement),
-            containerElement.linkTo(itemElement),
-            characterElement.linkTo(actionElement),
-            itemElement.linkTo(actionElement)
-        ] }
+        return {
+            elements: [characterElement, containerElement, itemElement, actionElement],
+            links: [
+                characterElement.linkTo(containerElement),
+                containerElement.linkTo(itemElement),
+                characterElement.linkTo(actionElement),
+                itemElement.linkTo(actionElement),
+            ],
+        }
     }
 
     rightSideDiagram(character: string, characterAttributes: string[]): ProcessingResult {
@@ -75,16 +89,4 @@ export class ItemUseService {
 
         return { elements: [characterElement, containerElement], links: [characterElement.linkTo(containerElement)] }
     }
-
-    getAttributeChange(attributeIncrease?: string[]): AttributeChange[] {
-        if (!attributeIncrease) return []
-        return attributeIncrease.map((attr) => {
-            const verbIndex = (this.nlp.readDoc(attr).tokens().out(this.nlp.its.pos) as string[]).findIndex((pos) => pos === 'VERB')
-            const attribute = stripUnnecessaryWords(attr.split(' ').slice(0, verbIndex -1).join(' '))
-            const number = attr.match(/\d+/)?.[0]
-
-            return { name: attribute, value: parseInt(number) }
-        })
-    }
-    
 }

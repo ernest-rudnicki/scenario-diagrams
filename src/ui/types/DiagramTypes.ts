@@ -8,4 +8,5 @@ export enum DiagramTypes {
     ATTRIBUTE_DECREASE = 'ATTRIBUTE_DECREASE',
     ITEM_USE = 'ITEM_USE',
     KILL_ENEMY = 'KILL_ENEMY',
+    ATTACK_ENEMY = 'ATTACK_ENEMY',
 }

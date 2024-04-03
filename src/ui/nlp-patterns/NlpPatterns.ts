@@ -42,6 +42,10 @@ export const sentencePatterns: CustomEntityExample[] = [
         name: DiagramTypes.KILL_ENEMY,
         patterns: ['[|DET] [|ADJ] [NOUN|PROPN] [kills|defeats|eliminates] [|DET] [|ADJ] [NOUN|PROPN] with [|DET] [|ADJ] [NOUN|PROPN]'],
     },
+    {
+        name: DiagramTypes.ATTACK_ENEMY,
+        patterns: ['[|DET] [|ADJ] [NOUN|PROPN] [attacks|strikes|hits] [|DET] [|ADJ] [NOUN|PROPN] with [|DET] [|ADJ] [NOUN|PROPN]'],
+    },
 ]
 
 export const phrasePatterns: CustomEntityExample[] = [

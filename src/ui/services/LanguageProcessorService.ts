@@ -10,6 +10,7 @@ import { ItemGrabService } from './ItemGrabService'
 import { NpcTalkService } from './NpcTalkService'
 import { ItemUseService } from './ItemUseService'
 import { KillEnemyService } from './KillEnemyService'
+import { AttackEnemyService } from './AttackEnemyService'
 
 export class LanguageProcessorService {
     private nlp: WinkMethods = winkNLP(model)
@@ -19,6 +20,7 @@ export class LanguageProcessorService {
     private npcTalkService: NpcTalkService
     private itemUseService: ItemUseService
     private killEnemyService: KillEnemyService
+    private attackEnemyService: AttackEnemyService
 
     constructor() {
         this.locationChangeService = new LocationChangeService(this.nlp)
@@ -26,6 +28,7 @@ export class LanguageProcessorService {
         this.npcTalkService = new NpcTalkService(this.nlp)
         this.itemUseService = new ItemUseService(this.nlp)
         this.killEnemyService = new KillEnemyService(this.nlp)
+        this.attackEnemyService = new AttackEnemyService(this.nlp)
     }
 
     convertToDiagramElements = (text: string): ProcessingResult => {
@@ -77,6 +80,15 @@ export class LanguageProcessorService {
 
         if (customEntitiesHashMap[DiagramTypes.KILL_ENEMY]) {
             return this.killEnemyService.processPossibleKillEnemy(customEntitiesHashMap[DiagramTypes.KILL_ENEMY].value, characterAttributes)
+        }
+
+        if (customEntitiesHashMap[DiagramTypes.ATTACK_ENEMY] && customEntitiesHashMap[DiagramTypes.ATTRIBUTE_DECREASE]) {
+            const sentences = doc.sentences().out()
+            return this.attackEnemyService.processPossibleAttackEnemy(
+                customEntitiesHashMap[DiagramTypes.ATTACK_ENEMY].value,
+                characterAttributes,
+                customEntitiesHashMap[DiagramTypes.ATTRIBUTE_DECREASE]?.map((entity) => sentences[entity.index])
+            )
         }
 
         return { elements: [], links: [] }
