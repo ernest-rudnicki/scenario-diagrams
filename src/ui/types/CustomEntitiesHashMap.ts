@@ -12,6 +12,8 @@ export type CustomEntitiesHashMap = {
     [DiagramTypes.ITEM_USE]: DetailEntity
     [DiagramTypes.KILL_ENEMY]: DetailEntity
     [DiagramTypes.ATTACK_ENEMY]: DetailEntity
+    [DiagramTypes.GET_ITEM_FROM_NPC]: DetailEntity
+    [DiagramTypes.GIVE_ITEM_TO_NPC]: DetailEntity
 }
 
 export interface DetailEntity extends Detail {

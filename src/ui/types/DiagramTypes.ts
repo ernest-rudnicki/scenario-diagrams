@@ -9,4 +9,6 @@ export enum DiagramTypes {
     ITEM_USE = 'ITEM_USE',
     KILL_ENEMY = 'KILL_ENEMY',
     ATTACK_ENEMY = 'ATTACK_ENEMY',
+    GET_ITEM_FROM_NPC = 'GET_ITEM_FROM_NPC',
+    GIVE_ITEM_TO_NPC = 'GIVE_ITEM_TO_NPC',
 }

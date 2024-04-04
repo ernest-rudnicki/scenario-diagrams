@@ -11,6 +11,8 @@ import { NpcTalkService } from './NpcTalkService'
 import { ItemUseService } from './ItemUseService'
 import { KillEnemyService } from './KillEnemyService'
 import { AttackEnemyService } from './AttackEnemyService'
+import { GetItemFromNpcService } from './GetItemFromNpcService'
+import { GiveItemToNpcService } from './GiveItemToNpcService'
 
 export class LanguageProcessorService {
     private nlp: WinkMethods = winkNLP(model)
@@ -21,6 +23,8 @@ export class LanguageProcessorService {
     private itemUseService: ItemUseService
     private killEnemyService: KillEnemyService
     private attackEnemyService: AttackEnemyService
+    private getItemFromNpcService: GetItemFromNpcService
+    private giveItemToNpcService: GiveItemToNpcService
 
     constructor() {
         this.locationChangeService = new LocationChangeService(this.nlp)
@@ -29,6 +33,8 @@ export class LanguageProcessorService {
         this.itemUseService = new ItemUseService(this.nlp)
         this.killEnemyService = new KillEnemyService(this.nlp)
         this.attackEnemyService = new AttackEnemyService(this.nlp)
+        this.getItemFromNpcService = new GetItemFromNpcService(this.nlp)
+        this.giveItemToNpcService = new GiveItemToNpcService(this.nlp)
     }
 
     convertToDiagramElements = (text: string): ProcessingResult => {
@@ -89,6 +95,14 @@ export class LanguageProcessorService {
                 characterAttributes,
                 customEntitiesHashMap[DiagramTypes.ATTRIBUTE_DECREASE]?.map((entity) => sentences[entity.index])
             )
+        }
+
+        if (customEntitiesHashMap[DiagramTypes.GET_ITEM_FROM_NPC]) {
+            return this.getItemFromNpcService.processPossibleGetItemFromNpc(customEntitiesHashMap[DiagramTypes.GET_ITEM_FROM_NPC].value)
+        }
+
+        if (customEntitiesHashMap[DiagramTypes.GIVE_ITEM_TO_NPC]) {
+            return this.giveItemToNpcService.processPossibleGiveItemToNpc(customEntitiesHashMap[DiagramTypes.GIVE_ITEM_TO_NPC].value)
         }
 
         return { elements: [], links: [] }

@@ -46,6 +46,14 @@ export const sentencePatterns: CustomEntityExample[] = [
         name: DiagramTypes.ATTACK_ENEMY,
         patterns: ['[|DET] [|ADJ] [NOUN|PROPN] [attacks|strikes|hits] [|DET] [|ADJ] [NOUN|PROPN] with [|DET] [|ADJ] [NOUN|PROPN]'],
     },
+    {
+        name: DiagramTypes.GET_ITEM_FROM_NPC,
+        patterns: ['[|DET] [NOUN|PROPN] gets [|DET] [|ADJ] [NOUN|PROPN] from [|DET] [NOUN|PROPN]'],
+    },
+    {
+        name: DiagramTypes.GIVE_ITEM_TO_NPC,
+        patterns: ['[|DET] [NOUN|PROPN] gives [|DET] [|ADJ] [NOUN|PROPN] to [|DET] [NOUN|PROPN]'],
+    },
 ]
 
 export const phrasePatterns: CustomEntityExample[] = [
