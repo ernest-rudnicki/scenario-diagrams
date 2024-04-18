@@ -9,6 +9,8 @@ export class CanvasService {
 
     private selectedElement: dia.Element<dia.Element.Attributes, dia.ModelSetOptions> | dia.Link<dia.Link.Attributes, dia.ModelSetOptions>
 
+    private lastSelectedElement: dia.Element
+
     init(paperElement: HTMLElement, document: Document): void {
         this.paper = new dia.Paper({
             el: paperElement,
@@ -51,13 +53,19 @@ export class CanvasService {
     }
 
     private setupHandlers(): void {
-        this.paper.on('element:pointerdown', (element) => this.selectElement(element))
+        this.paper.on('element:pointerdown', (element, event) => this.selectElement(element, event))
         this.paper.on('link:pointerdown', (element) => this.selectLink(element))
         this.paper.on('blank:pointerdown', () => this.unselectElement())
-        this.document.addEventListener('keydown', () => this.removeElement())
+        this.document.addEventListener('keydown', (event) => this.handleKeys(event))
     }
 
-    selectElement(element: dia.ElementView): void {
+    selectElement(element: dia.ElementView, event: dia.Event): void {
+        if (this.selectedElement?.isElement() && event.shiftKey) {
+            this.lastSelectedElement = element.model
+            this.lastSelectedElement.attr({ body: { stroke: 'gold', strokeWidth: 2 } })
+            return
+        }
+
         if (this.selectedElement) {
             this.resetSelectedElement()
         }
@@ -66,6 +74,7 @@ export class CanvasService {
         currentElement.attr({ body: { stroke: 'gold', strokeWidth: 2 } })
 
         this.selectedElement = currentElement
+        this.resetLastSelectedElement()
     }
 
     selectLink(link: dia.LinkView): void {
@@ -77,6 +86,7 @@ export class CanvasService {
         currentElement.attr({ line: { stroke: 'gold', strokeWidth: 3, strokeDasharray: '5,2' } })
 
         this.selectedElement = currentElement
+        this.resetLastSelectedElement()
     }
 
     unselectElement(): void {
@@ -88,11 +98,37 @@ export class CanvasService {
     }
 
     resetSelectedElement(): void {
-        this.selectedElement.attr({ body: { stroke: 'black' }, line: { stroke: 'black', strokeWidth: 1, strokeDasharray: 0 } })
+        this.selectedElement?.attr({ body: { stroke: 'black' }, line: { stroke: 'black', strokeWidth: 1, strokeDasharray: 0 } })
+    }
+
+    resetLastSelectedElement(): void {
+        this.lastSelectedElement?.attr({ body: { stroke: 'black' }, line: { stroke: 'black', strokeWidth: 1, strokeDasharray: 0 } })
+        this.lastSelectedElement = null
+    }
+
+    handleKeys(event: KeyboardEvent): void {
+        switch (event.key) {
+            case 'Delete':
+                this.removeElement()
+                break
+            case 'l':
+                this.addLink()
+                break
+            default:
+        }
     }
 
     removeElement(): void {
         this.selectedElement?.remove()
         this.selectedElement = null
+    }
+
+    addLink(): void {
+        if (this.selectedElement && this.lastSelectedElement) {
+            const link = new shapes.standard.Link()
+            link.source(this.selectedElement)
+            link.target(this.lastSelectedElement)
+            link.addTo(this.graph)
+        }
     }
 }
