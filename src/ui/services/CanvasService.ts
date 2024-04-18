@@ -7,7 +7,7 @@ export class CanvasService {
     private paper: dia.Paper
     private document: Document
 
-    private selectedElement: dia.Element<dia.Element.Attributes, dia.ModelSetOptions>
+    private selectedElement: dia.Element<dia.Element.Attributes, dia.ModelSetOptions> | dia.Link<dia.Link.Attributes, dia.ModelSetOptions>
 
     init(paperElement: HTMLElement, document: Document): void {
         this.paper = new dia.Paper({
@@ -52,17 +52,29 @@ export class CanvasService {
 
     private setupHandlers(): void {
         this.paper.on('element:pointerdown', (element) => this.selectElement(element))
+        this.paper.on('link:pointerdown', (element) => this.selectLink(element))
         this.paper.on('blank:pointerdown', () => this.unselectElement())
         this.document.addEventListener('keydown', () => this.removeElement())
     }
 
     selectElement(element: dia.ElementView): void {
         if (this.selectedElement) {
-            this.selectedElement.attr({ body: { stroke: 'black' } })
+            this.resetSelectedElement()
         }
 
         const currentElement = element.model
-        currentElement.attr({ body: { stroke: 'gold', strokeWidth: 2, strokeDashoffset: 10 } })
+        currentElement.attr({ body: { stroke: 'gold', strokeWidth: 2 } })
+
+        this.selectedElement = currentElement
+    }
+
+    selectLink(link: dia.LinkView): void {
+        if (this.selectedElement) {
+            this.resetSelectedElement()
+        }
+
+        const currentElement = link.model
+        currentElement.attr({ line: { stroke: 'gold', strokeWidth: 3, strokeDasharray: '5,2' } })
 
         this.selectedElement = currentElement
     }
@@ -70,9 +82,13 @@ export class CanvasService {
     unselectElement(): void {
         if (!this.selectedElement) return
 
-        this.selectedElement.attr({ body: { stroke: 'black' } })
+        this.resetSelectedElement()
 
         this.selectedElement = null
+    }
+
+    resetSelectedElement(): void {
+        this.selectedElement.attr({ body: { stroke: 'black' }, line: { stroke: 'black', strokeWidth: 1, strokeDasharray: 0 } })
     }
 
     removeElement(): void {
