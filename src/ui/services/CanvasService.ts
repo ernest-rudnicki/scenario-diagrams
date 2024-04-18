@@ -6,6 +6,8 @@ export class CanvasService {
     private readonly graph = new dia.Graph()
     private paper: dia.Paper
 
+    private selectedElement: dia.Element<dia.Element.Attributes, dia.ModelSetOptions>
+
     init(paperElement: HTMLElement): void {
         this.paper = new dia.Paper({
             el: paperElement,
@@ -14,6 +16,8 @@ export class CanvasService {
             model: this.graph,
             gridSize: 1,
         })
+
+        this.setupHandlers()
     }
 
     createDiagram(elements: DiagramElement[], links: shapes.standard.Link[]): void {
@@ -42,5 +46,29 @@ export class CanvasService {
 
         this.graph.addCells([line.shape])
         arrow.addTo(this.graph)
+    }
+
+    private setupHandlers(): void {
+        this.paper.on('element:pointerdown', (element) => this.selectElement(element))
+        this.paper.on('blank:pointerdown', () => this.unselectElement())
+    }
+
+    selectElement(element: dia.ElementView): void {
+        if (this.selectedElement) {
+            this.selectedElement.attr({ body: { stroke: 'black' } })
+        }
+
+        const currentElement = element.model
+        currentElement.attr({ body: { stroke: 'gold', strokeWidth: 2, strokeDashoffset: 10 } })
+
+        this.selectedElement = currentElement
+    }
+
+    unselectElement(): void {
+        if (!this.selectedElement) return
+
+        this.selectedElement.attr({ body: { stroke: 'black' } })
+
+        this.selectedElement = null
     }
 }
