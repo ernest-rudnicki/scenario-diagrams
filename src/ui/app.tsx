@@ -8,7 +8,7 @@ const AppComponent = () => {
     const { canvas, languageProcessor } = useDiagramServices()
 
     onMount(() => {
-        canvas.init(document.getElementById('paper'))
+        canvas.init(document.getElementById('paper'), document)
     })
 
     const onSubmit = (text: string) => {

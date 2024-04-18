@@ -5,10 +5,11 @@ import { LineElement } from '../diagram-elements/LineElement'
 export class CanvasService {
     private readonly graph = new dia.Graph()
     private paper: dia.Paper
+    private document: Document
 
     private selectedElement: dia.Element<dia.Element.Attributes, dia.ModelSetOptions>
 
-    init(paperElement: HTMLElement): void {
+    init(paperElement: HTMLElement, document: Document): void {
         this.paper = new dia.Paper({
             el: paperElement,
             width: 1024,
@@ -16,6 +17,7 @@ export class CanvasService {
             model: this.graph,
             gridSize: 1,
         })
+        this.document = document
 
         this.setupHandlers()
     }
@@ -51,6 +53,7 @@ export class CanvasService {
     private setupHandlers(): void {
         this.paper.on('element:pointerdown', (element) => this.selectElement(element))
         this.paper.on('blank:pointerdown', () => this.unselectElement())
+        this.document.addEventListener('keydown', () => this.removeElement())
     }
 
     selectElement(element: dia.ElementView): void {
@@ -69,6 +72,11 @@ export class CanvasService {
 
         this.selectedElement.attr({ body: { stroke: 'black' } })
 
+        this.selectedElement = null
+    }
+
+    removeElement(): void {
+        this.selectedElement?.remove()
         this.selectedElement = null
     }
 }
