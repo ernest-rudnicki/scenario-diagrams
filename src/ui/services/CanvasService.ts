@@ -7,7 +7,7 @@ export class CanvasService {
     private paper: dia.Paper
     private document: Document
 
-    private selectedElement: dia.Element<dia.Element.Attributes, dia.ModelSetOptions> | dia.Link<dia.Link.Attributes, dia.ModelSetOptions>
+    private selectedElement: dia.Element<dia.Element.Attributes, dia.ModelSetOptions>
 
     private lastSelectedElement: dia.Element
 
@@ -60,6 +60,7 @@ export class CanvasService {
     }
 
     selectElement(element: dia.ElementView, event: dia.Event): void {
+        $('.editor').remove()
         if (this.selectedElement?.isElement() && event.shiftKey) {
             this.lastSelectedElement = element.model
             this.lastSelectedElement.attr({ body: { stroke: 'gold', strokeWidth: 2 } })
@@ -73,11 +74,17 @@ export class CanvasService {
         const currentElement = element.model
         currentElement.attr({ body: { stroke: 'gold', strokeWidth: 2 } })
 
+        const currentText = currentElement.attr('text/text')
+        console.log(currentText)
+
+        this.createInput(element, currentText)
+
         this.selectedElement = currentElement
         this.resetLastSelectedElement()
     }
 
     selectLink(link: dia.LinkView): void {
+        $('.editor').remove()
         if (this.selectedElement) {
             this.resetSelectedElement()
         }
@@ -85,11 +92,12 @@ export class CanvasService {
         const currentElement = link.model
         currentElement.attr({ line: { stroke: 'gold', strokeWidth: 3, strokeDasharray: '5,2' } })
 
-        this.selectedElement = currentElement
+        this.selectedElement = currentElement as any
         this.resetLastSelectedElement()
     }
 
     unselectElement(): void {
+        $('.editor').remove()
         if (!this.selectedElement) return
 
         this.resetSelectedElement()
@@ -130,5 +138,26 @@ export class CanvasService {
             link.target(this.lastSelectedElement)
             link.addTo(this.graph)
         }
+    }
+
+    createInput(element: dia.ElementView, text: string): void {
+        const input = $('<input type="text" class="editor" style="position:absolute;"/>').val(text)
+        $('#paper').append(input)
+
+        const bbox = element.getBBox()
+        input.css({
+            left: bbox.x,
+            top: bbox.y - 30,
+            width: bbox.width,
+        })
+
+        input.focus().select()
+
+        input.on('input', (event) => {
+            this.selectedElement.resize(($(event.target).val() as string).length * 10, this.selectedElement.size().height)
+            this.selectedElement.attr({ text: { text: $(event.target).val() as string } })
+        })
+
+        input.blur(() => input.remove())
     }
 }
