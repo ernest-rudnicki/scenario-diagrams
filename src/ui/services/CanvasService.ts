@@ -30,14 +30,14 @@ export class CanvasService {
         this.addLinks(links)
     }
 
-    private addElements(elements: DiagramElement[]): void {
+     addElements(elements: DiagramElement[]): void {
         elements.forEach((element) => {
             this.graph.addCell(element.shape)
             element.innerElements.forEach((innerElement) => this.graph.addCell(innerElement.shape))
         })
     }
 
-    private addLinks(links: shapes.standard.Link[]): void {
+    addLinks(links: shapes.standard.Link[]): void {
         links.forEach((link) => link.addTo(this.graph))
     }
 
@@ -75,7 +75,6 @@ export class CanvasService {
         currentElement.attr({ body: { stroke: 'gold', strokeWidth: 2 } })
 
         const currentText = currentElement.attr('text/text')
-        console.log(currentText)
 
         this.createInput(element, currentText)
 

@@ -3,6 +3,15 @@ import './index.css'
 import { createSignal, onMount } from 'solid-js'
 import { BottomBar } from './components/BottomBar/BottomBar'
 import { DiagramServicesProvider, useDiagramServices } from './providers/DiagramServicesProvider'
+import { CharacterElement } from './diagram-elements/CharacterElement'
+import { CharacterTypes } from './types/CharacterTypes'
+import { LocationElement } from './diagram-elements/LocationElement'
+import { ActionElement } from './diagram-elements/ActionElement'
+import { AttributeElement } from './diagram-elements/AttributeElement'
+import { AttributeTypes } from './types/AttributeTypes'
+import { BuildingElement } from './diagram-elements/BuildingElement'
+import { ContainerElement } from './diagram-elements/ContainerElement'
+import { ItemElement } from './diagram-elements/ItemElement'
 
 const AppComponent = () => {
     const { canvas, languageProcessor } = useDiagramServices()
@@ -18,7 +27,86 @@ const AppComponent = () => {
     }
 
     const onDrop = (event: DragEvent) => {
-        console.log(event.target);
+        const { offsetX, offsetY } = event;
+        switch(dragged()) {
+            case 'character': {
+                const characterElement = new CharacterElement(
+                    { position: { x: offsetX, y: offsetY } },
+                    { text: 'Character', type: CharacterTypes.Player },
+                    []
+                )
+                canvas.addElements([characterElement])
+                break;
+            }
+            case 'npc': {
+                const npcElement = new CharacterElement(
+                    { position: { x: offsetX, y: offsetY } },
+                    { text: 'NPC', type: CharacterTypes.NPC },
+                    []
+                )
+                canvas.addElements([npcElement])
+                break;
+            }
+            case 'enemy': {
+                const enemyElement = new CharacterElement(
+                    { position: { x: offsetX, y: offsetY } },
+                    { text: 'Enemy', type: CharacterTypes.Enemy },
+                    []
+                )
+                canvas.addElements([enemyElement])
+                break;
+            }
+            case 'location': {
+                const locationElement = new LocationElement(
+                    { position: { x: offsetX, y: offsetY } },
+                    { text: 'Location' },
+                )
+                canvas.addElements([locationElement])
+                break;
+            }
+            case 'action': {
+                const actionElement = new ActionElement(
+                    { position: { x: offsetX, y: offsetY } },
+                    { text: 'Action' },
+                )
+                canvas.addElements([actionElement])
+                break;
+            }
+            case 'attribute': {
+                const attributeElement = new AttributeElement(
+                    { position: { x: offsetX, y: offsetY } },
+                    { text: 'Attribute', type: AttributeTypes.Normal },
+                )
+                canvas.addElements([attributeElement])
+                break;
+            }
+            case 'building': {
+                const buildingElement = new BuildingElement(
+                    { position: { x: offsetX, y: offsetY } },
+                    { text: 'Building'},
+                )
+                canvas.addElements([buildingElement])
+                break;
+            }
+            case 'container': {
+                const containerElement = new ContainerElement(
+                    { position: { x: offsetX, y: offsetY } },
+                    { text: 'Container'},
+                )
+                canvas.addElements([containerElement])
+                break;
+            }
+            case 'item': {
+                const itemElement = new ItemElement(
+                    { position: { x: offsetX, y: offsetY } },
+                    { text: 'Item'},
+                )
+                canvas.addElements([itemElement])
+                break;
+            }
+            default:
+                break;
+        }
     }
 
     const onDragStart = (event: DragEvent) => {
