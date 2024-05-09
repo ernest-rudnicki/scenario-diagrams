@@ -12,7 +12,7 @@ import { ActionElement } from '../diagram-elements/ActionElement'
 export class GetItemFromNpcService {
     constructor(private nlp: WinkMethods) {}
 
-    processPossibleGetItemFromNpc(sentence: string): ProcessingResult {
+    processPossibleGetItemFromNpc(sentence: string, characterAttributes: string[]): ProcessingResult {
         this.nlp.learnCustomEntities(phrasePatterns)
         const entities = this.nlp.readDoc(sentence).customEntities().out(this.nlp.its.detail) as Detail[]
 
@@ -20,8 +20,8 @@ export class GetItemFromNpcService {
         const item = stripUnnecessaryWords(entities[1].value)
         const npc = stripUnnecessaryWords(entities[2].value)
 
-        const leftSideDiagram = this.leftSideDiagram(character, item, npc)
-        const rightSideDiagram = this.rightSideDiagram(character, item, npc)
+        const leftSideDiagram = this.leftSideDiagram(character, item, npc, characterAttributes)
+        const rightSideDiagram = this.rightSideDiagram(character, item, npc, characterAttributes)
 
         return {
             elements: [...leftSideDiagram.elements, ...rightSideDiagram.elements],
@@ -29,11 +29,11 @@ export class GetItemFromNpcService {
         }
     }
 
-    leftSideDiagram(character: string, item: string, npc: string): ProcessingResult {
+    leftSideDiagram(character: string, item: string, npc: string, characterAttributes: string[]): ProcessingResult {
         const characterElement = new CharacterElement(
             { position: { x: 100, y: 100 } },
             { text: capitalizeFirstLetter(character), type: CharacterTypes.Player },
-            []
+            characterAttributes
         )
 
         const containerElement = new ContainerElement({ position: { x: 100, y: 500 } }, { text: 'Container' })
@@ -48,11 +48,11 @@ export class GetItemFromNpcService {
         }
     }
 
-    rightSideDiagram(character: string, item: string, npc: string): ProcessingResult {
+    rightSideDiagram(character: string, item: string, npc: string, characterAttributes: string[]): ProcessingResult {
         const characterElement = new CharacterElement(
             { position: { x: 600, y: 100 } },
             { text: capitalizeFirstLetter(character), type: CharacterTypes.Player },
-            []
+            characterAttributes
         )
 
         const containerElement = new ContainerElement({ position: { x: 600, y: 200 } }, { text: 'Container' })

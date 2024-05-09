@@ -44,7 +44,7 @@ export class LocationChangeService {
 
         return {
             elements: [characterElement, locationElement, locationToElement],
-            links: [characterElement.linkTo(locationElement)],
+            links: [characterElement.linkTo(locationElement), locationElement.linkTo(locationToElement), locationToElement.linkTo(locationElement)],
         }
     }
 
@@ -59,7 +59,7 @@ export class LocationChangeService {
 
         return {
             elements: [characterElement, locationElement, locationToElement],
-            links: [characterElement.linkTo(locationToElement)],
+            links: [characterElement.linkTo(locationToElement), locationElement.linkTo(locationToElement), locationToElement.linkTo(locationElement)],
         }
     }
 }

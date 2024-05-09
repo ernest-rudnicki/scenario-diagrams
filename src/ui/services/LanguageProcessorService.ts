@@ -98,11 +98,17 @@ export class LanguageProcessorService {
         }
 
         if (customEntitiesHashMap[DiagramTypes.GET_ITEM_FROM_NPC]) {
-            return this.getItemFromNpcService.processPossibleGetItemFromNpc(customEntitiesHashMap[DiagramTypes.GET_ITEM_FROM_NPC].value)
+            return this.getItemFromNpcService.processPossibleGetItemFromNpc(
+                customEntitiesHashMap[DiagramTypes.GET_ITEM_FROM_NPC].value,
+                characterAttributes
+            )
         }
 
         if (customEntitiesHashMap[DiagramTypes.GIVE_ITEM_TO_NPC]) {
-            return this.giveItemToNpcService.processPossibleGiveItemToNpc(customEntitiesHashMap[DiagramTypes.GIVE_ITEM_TO_NPC].value)
+            return this.giveItemToNpcService.processPossibleGiveItemToNpc(
+                customEntitiesHashMap[DiagramTypes.GIVE_ITEM_TO_NPC].value,
+                characterAttributes
+            )
         }
 
         return { elements: [], links: [] }
