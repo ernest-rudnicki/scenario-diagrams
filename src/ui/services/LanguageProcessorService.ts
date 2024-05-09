@@ -13,6 +13,7 @@ import { KillEnemyService } from './KillEnemyService'
 import { AttackEnemyService } from './AttackEnemyService'
 import { GetItemFromNpcService } from './GetItemFromNpcService'
 import { GiveItemToNpcService } from './GiveItemToNpcService'
+import { BuildingBuiltService } from './BuildingBuiltService '
 
 export class LanguageProcessorService {
     private nlp: WinkMethods = winkNLP(model)
@@ -25,6 +26,7 @@ export class LanguageProcessorService {
     private attackEnemyService: AttackEnemyService
     private getItemFromNpcService: GetItemFromNpcService
     private giveItemToNpcService: GiveItemToNpcService
+    private buildingBuiltService: BuildingBuiltService
 
     constructor() {
         this.locationChangeService = new LocationChangeService(this.nlp)
@@ -35,6 +37,7 @@ export class LanguageProcessorService {
         this.attackEnemyService = new AttackEnemyService(this.nlp)
         this.getItemFromNpcService = new GetItemFromNpcService(this.nlp)
         this.giveItemToNpcService = new GiveItemToNpcService(this.nlp)
+        this.buildingBuiltService = new BuildingBuiltService(this.nlp)
     }
 
     convertToDiagramElements = (text: string): ProcessingResult => {
@@ -111,13 +114,39 @@ export class LanguageProcessorService {
             )
         }
 
+        if (customEntitiesHashMap[DiagramTypes.BUILDING_BUILT]) {
+            const sentences = doc.sentences().out()
+            return this.buildingBuiltService.processPossibleBuildingBuilt(
+                customEntitiesHashMap[DiagramTypes.BUILDING_BUILT].value,
+                characterAttributes,
+                customEntitiesHashMap[DiagramTypes.GLOBAL_ATTRIBUTE_INCREASE]?.map((entity) => sentences[entity.index]),
+                customEntitiesHashMap[DiagramTypes.GLOBAL_ATTRIBUTE_DECREASE]?.map((entity) => sentences[entity.index])
+            )
+        }
+
+        if (customEntitiesHashMap[DiagramTypes.BUILDING_DESTROYED]) {
+            const sentences = doc.sentences().out()
+            return this.buildingBuiltService.processPossibleBuildingBuilt(
+                customEntitiesHashMap[DiagramTypes.BUILDING_DESTROYED].value,
+                characterAttributes,
+                customEntitiesHashMap[DiagramTypes.GLOBAL_ATTRIBUTE_INCREASE]?.map((entity) => sentences[entity.index]),
+                customEntitiesHashMap[DiagramTypes.GLOBAL_ATTRIBUTE_DECREASE]?.map((entity) => sentences[entity.index]),
+                true
+            )
+        }
+
         return { elements: [], links: [] }
     }
 
     getCustomEntitiesAsHashMap(customEntities: Detail[]): CustomEntitiesHashMap {
         return customEntities.reduce((acc, entity, index) => {
             const type = entity.type as DiagramTypes
-            if (type === DiagramTypes.ATTRIBUTE_INCREASE || type === DiagramTypes.ATTRIBUTE_DECREASE) {
+            if (
+                type === DiagramTypes.ATTRIBUTE_INCREASE ||
+                type === DiagramTypes.ATTRIBUTE_DECREASE ||
+                type === DiagramTypes.GLOBAL_ATTRIBUTE_INCREASE ||
+                type === DiagramTypes.GLOBAL_ATTRIBUTE_DECREASE
+            ) {
                 if (acc[type]) {
                     acc[type].push({ ...entity, index: index })
                 } else {

@@ -11,7 +11,7 @@ export class AttributeElement extends DiagramElement {
 
         const shape = new shapes.basic.Path({
             position: shapeData.position,
-            size: { width: text.length * 10, height: 20 },
+            size: { width: text.length * 11, height: 20 },
             attrs: {
                 path: {
                     fill: AttributeColorMap[type],

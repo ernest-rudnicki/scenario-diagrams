@@ -14,6 +14,10 @@ export type CustomEntitiesHashMap = {
     [DiagramTypes.ATTACK_ENEMY]: DetailEntity
     [DiagramTypes.GET_ITEM_FROM_NPC]: DetailEntity
     [DiagramTypes.GIVE_ITEM_TO_NPC]: DetailEntity
+    [DiagramTypes.BUILDING_BUILT]: DetailEntity
+    [DiagramTypes.BUILDING_DESTROYED]: DetailEntity
+    [DiagramTypes.GLOBAL_ATTRIBUTE_INCREASE]: DetailEntity[]
+    [DiagramTypes.GLOBAL_ATTRIBUTE_DECREASE]: DetailEntity[]
 }
 
 export interface DetailEntity extends Detail {

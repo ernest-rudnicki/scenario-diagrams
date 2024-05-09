@@ -4,5 +4,6 @@ export const stripUnnecessaryWords = (text: string): string => {
         .replace(/\./g, '')
         .replace(/,/g, '')
         .replace(/\s+/g, ' ')
+        .replace('is', '')
         .trim()
 }

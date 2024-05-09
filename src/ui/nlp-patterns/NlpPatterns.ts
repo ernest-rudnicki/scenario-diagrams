@@ -54,6 +54,22 @@ export const sentencePatterns: CustomEntityExample[] = [
         name: DiagramTypes.GIVE_ITEM_TO_NPC,
         patterns: ['[|DET] [NOUN|PROPN] gives [|DET] [|ADJ] [NOUN|PROPN] to [|DET] [NOUN|PROPN]'],
     },
+    {
+        name: DiagramTypes.BUILDING_BUILT,
+        patterns: ['[|DET] [NOUN|PROPN] builds [|DET] [|ADJ] [NOUN|PROPN]'],
+    },
+    {
+        name: DiagramTypes.BUILDING_DESTROYED,
+        patterns: ['[|DET] [NOUN|PROPN] destroys [|DET] [|ADJ] [NOUN|PROPN]'],
+    },
+    {
+        name: DiagramTypes.GLOBAL_ATTRIBUTE_INCREASE,
+        patterns: ['[|DET] [NOUN|PROPN] is globally increased by'],
+    },
+    {
+        name: DiagramTypes.GLOBAL_ATTRIBUTE_DECREASE,
+        patterns: ['[|DET] [NOUN|PROPN] is globally decreased by'],
+    },
 ]
 
 export const phrasePatterns: CustomEntityExample[] = [
