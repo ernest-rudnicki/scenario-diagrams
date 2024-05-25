@@ -51,7 +51,12 @@ export class ItemGrabService {
 
         return {
             elements: [characterElement, locationElement, containerElement, actionElement, itemElement],
-            links: [characterElement.linkTo(locationElement), characterElement.linkTo(containerElement), characterElement.linkTo(actionElement)],
+            links: [
+                characterElement.linkTo(locationElement),
+                characterElement.linkTo(containerElement),
+                characterElement.linkTo(actionElement),
+                itemElement.linkTo(locationElement),
+            ],
         }
     }
 

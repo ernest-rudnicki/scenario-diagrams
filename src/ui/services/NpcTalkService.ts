@@ -51,7 +51,12 @@ export class NpcTalkService {
 
         return {
             elements: [characterElement, locationElement, actionElement, npcElement],
-            links: [characterElement.linkTo(locationElement), characterElement.linkTo(actionElement), actionElement.linkTo(npcElement)],
+            links: [
+                characterElement.linkTo(locationElement),
+                characterElement.linkTo(actionElement),
+                actionElement.linkTo(npcElement),
+                npcElement.linkTo(locationElement),
+            ],
         }
     }
 
@@ -68,7 +73,7 @@ export class NpcTalkService {
 
         return {
             elements: [characterElement, locationElement, npcElement],
-            links: [characterElement.linkTo(locationElement)],
+            links: [characterElement.linkTo(locationElement), npcElement.linkTo(locationElement)],
         }
     }
 }
